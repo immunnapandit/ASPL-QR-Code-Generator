@@ -4,6 +4,7 @@ import { QRCodeCanvas } from "qrcode.react";
 export default function QRCodeGenerator() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [showQR, setShowQR] = useState(false);
   const qrRef = useRef(null);
 
@@ -14,6 +15,7 @@ export default function QRCodeGenerator() {
       `N:${name};;;`,
       `FN:${name}`,
       `TEL;TYPE=CELL:${phoneNumber}`,
+      `EMAIL;TYPE=INTERNET:${email}`,
       "END:VCARD"
     ].join("\r\n");
   };
@@ -33,6 +35,7 @@ export default function QRCodeGenerator() {
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4 sm:p-6">
       <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-xl w-full max-w-sm sm:max-w-md">
         <h1 className="text-xl sm:text-2xl font-bold text-center mb-6">Contact QR Code Generator</h1>
+
         <input
           type="text"
           placeholder="Enter Name"
@@ -40,6 +43,7 @@ export default function QRCodeGenerator() {
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
+
         <input
           type="tel"
           placeholder="Enter Phone Number"
@@ -47,6 +51,15 @@ export default function QRCodeGenerator() {
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
         />
+
+        <input
+          type="email"
+          placeholder="Enter Email Address"
+          className="w-full p-3 mb-4 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
         <button
           className="w-full bg-blue-500 hover:bg-blue-600 text-white rounded-xl p-3 mb-4"
           onClick={() => setShowQR(true)}
@@ -54,7 +67,7 @@ export default function QRCodeGenerator() {
           Generate QR Code
         </button>
 
-        {showQR && phoneNumber && name && (
+        {showQR && phoneNumber && name && email && (
           <div className="flex flex-col items-center" ref={qrRef}>
             <QRCodeCanvas
               value={generateQRData()}
